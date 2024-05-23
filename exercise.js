@@ -2,7 +2,6 @@ const http = require("http");
 const port = process.env.PORT || 8080;
 const host = process.env.HOST || "localhost";
 const fs = require("fs");
-const path = require("path");
 const { accessJSON, writeOnJSON } = require("./functions");
 
 
@@ -37,7 +36,8 @@ const server = http.createServer((req, res) => {
                     page += `<li>${element}</li>`;
                 });
                 page += "</ul>";
-                res.end(page);
+                const html = fs.readFileSync("chuckPage.html", "utf-8").replace("{{jokes}}", page);
+                res.end(html);
             })
             .catch(error => {
                 res.writeHead(500, { "Content-Type": "text/html; charset=utf-8" });
